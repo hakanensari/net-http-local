@@ -13,8 +13,11 @@ module Multiplex
     end
 
     if block_given?
-      yield
-      unbind
+      begin
+        yield
+      ensure
+        unbind
+      end
     end
   end
 
