@@ -49,4 +49,14 @@ class TestMultiplex < Test::Unit::TestCase
       TCPSocket.original_open
     end
   end
+
+  def test_get_response
+    url = URI.parse('http://jsonip.com')
+
+    Net::HTTP.bind(@@new_ip) do
+      res = Net::HTTP.get_response(url);
+      ip = JSON.parse(res.body)['ip']
+      assert_equal @@new_ip, ip
+    end
+  end
 end
