@@ -7,7 +7,7 @@ module Multiplex
         alias_method :original_open, :open
 
         define_method(:open) do |conn_address, conn_port|
-          original_open(conn_address, conn_port, @local_ip)
+          original_open(conn_address, conn_port, local_ip)
         end
       end
     end

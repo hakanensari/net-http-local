@@ -35,4 +35,16 @@ class TestMultiplex < Test::Unit::TestCase
 
     assert_equal @old_ip, find_ip
   end
+
+  def test_do_not_unbind_when_bind_not_given_block
+    Net::HTTP.bind(@new_ip)
+    assert_respond_to TCPSocket, :original_open
+  end
+
+  def test_unbind_when_bind_given_block
+    Net::HTTP.bind(@new_ip) {}
+    assert_raise NoMethodError do
+      TCPSocket.original_open
+    end
+  end
 end
