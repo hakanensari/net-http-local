@@ -11,9 +11,11 @@ class TestMultiplex < Test::Unit::TestCase
   end
 
   def setup
-    @old_ip = find_ip
-    print "Change #{@old_ip} to: "
-    @new_ip = STDIN.gets.chomp
+    unless defined?(@@old_ip)
+      @@old_ip = find_ip
+      print "Change #{@@old_ip} to: "
+      @@new_ip = STDIN.gets.chomp
+    end
   end
 
   def teardown
@@ -21,28 +23,28 @@ class TestMultiplex < Test::Unit::TestCase
   end
 
   def test_bind_without_block
-    Net::HTTP.bind(@new_ip)
-    assert_equal @new_ip, find_ip
+    Net::HTTP.bind(@@new_ip)
+    assert_equal @@new_ip, find_ip
 
     Net::HTTP.unbind
-    assert_equal @old_ip, find_ip
+    assert_equal @@old_ip, find_ip
   end
 
   def test_bind_with_block
-    Net::HTTP.bind(@new_ip) do
-      assert_equal @new_ip, find_ip
+    Net::HTTP.bind(@@new_ip) do
+      assert_equal @@new_ip, find_ip
     end
 
-    assert_equal @old_ip, find_ip
+    assert_equal @@old_ip, find_ip
   end
 
   def test_do_not_unbind_when_bind_not_given_block
-    Net::HTTP.bind(@new_ip)
+    Net::HTTP.bind(@@new_ip)
     assert_respond_to TCPSocket, :original_open
   end
 
   def test_unbind_when_bind_given_block
-    Net::HTTP.bind(@new_ip) {}
+    Net::HTTP.bind(@@new_ip) {}
     assert_raise NoMethodError do
       TCPSocket.original_open
     end
