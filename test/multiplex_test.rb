@@ -1,9 +1,13 @@
-require File.expand_path('../test_helper', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'test/unit'
+require 'json'
+require 'multiplex'
 
 class TestMultiplex < Test::Unit::TestCase
   def find_ip
-    url = URI.parse('http://jsonip.com')
-    res = Net::HTTP.start(url.host, url.port) do |http|
+    uri = URI.parse('http://jsonip.com')
+    res = Net::HTTP.start(uri.host, uri.port) do |http|
       http.get('/')
     end
 
@@ -47,16 +51,6 @@ class TestMultiplex < Test::Unit::TestCase
     Net::HTTP.bind(@@new_ip) {}
     assert_raise NoMethodError do
       TCPSocket.original_open
-    end
-  end
-
-  def test_get_response
-    url = URI.parse('http://jsonip.com')
-
-    Net::HTTP.bind(@@new_ip) do
-      res = Net::HTTP.get_response(url);
-      ip = JSON.parse(res.body)['ip']
-      assert_equal @@new_ip, ip
     end
   end
 end
