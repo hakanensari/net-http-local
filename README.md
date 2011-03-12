@@ -1,9 +1,10 @@
 Multiplex
 =========
 
-Multiplex lets you bind Net::HTTP requests to non-default local IP
-addresses. If you are craving cURL's interface option, this is what
-you need.
+Multiplex gently monkey-patches TCPSocket to bind a Net::HTTP request to
+a non-default local IP address.
+
+If you are craving cURL's interface option, this is what you need.
 
 ![gatling gun](http://upload.wikimedia.org/wikipedia/commons/6/6c/Gatling_gun.jpg)
 
