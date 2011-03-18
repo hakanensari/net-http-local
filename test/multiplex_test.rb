@@ -53,4 +53,9 @@ class TestMultiplex < Test::Unit::TestCase
       TCPSocket.original_open
     end
   end
+
+  def test_bind_nil
+    Net::HTTP.bind(nil)
+    assert_equal @@old_ip, find_ip
+  end
 end
