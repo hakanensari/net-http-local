@@ -1,12 +1,14 @@
 Multiplex
 =========
 
-Multiplex gently monkey-patches TCPSocket to bind a Net::HTTP request to
-a non-default local IP address.
+Multiplex gently monkey-patches TCPSocket to bind a Net::HTTP request to a
+non-default local IP address.
 
-If you are craving cURL's interface option, this is what you need.
+If you are craving cURL's `--interface` option to fire HTTP requests over
+multiple local IPs and are looking for a native Ruby solution, this is what
+you need.
 
-![gatling gun](http://upload.wikimedia.org/wikipedia/commons/6/6c/Gatling_gun.jpg)
+![tellier](http://totallywiredradio.files.wordpress.com/2009/09/tellier.jpg?w=450&h=450)
 
 Usage
 -----
