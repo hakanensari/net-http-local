@@ -1,3 +1,5 @@
+require 'net/http'
+
 # Net::HTTP::Local binds a Net::HTTP request to a specified local address and
 # port.
 module Net::HTTP::Local
@@ -37,5 +39,4 @@ module Net::HTTP::Local
   end
 end
 
-Net::HTTP.extend Net::HTTP::Local if defined? Net::HTTP
-Net::HTTPS.extend Net::HTTP::Local if defined? Net::HTTPS
+Net::HTTP.extend Net::HTTP::Local
