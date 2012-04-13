@@ -1,41 +1,36 @@
-Multiplex
-=========
+Net::HTTP::Local
+================
 
-Multiplex gently monkey-patches TCPSocket to bind a Net::HTTP request to a
-non-default local IP address.
+Net::HTTP::Local allows TCPSocket to bind a Net::HTTP request to a specified
+local address and port.
 
-If you are craving cURL's `--interface` option to fire HTTP requests over
-multiple local IPs and are looking for a native Ruby solution, this is what
-you need.
+If you are craving cURL's `interface` option, this is what you need.
 
-![tellier](http://totallywiredradio.files.wordpress.com/2009/09/tellier.jpg?w=450&h=450)
+Installation
+------------
+
+```sh
+gem install net-http-local'
+```
 
 Usage
 -----
 
-Say the IP of your default interface is 10.1.1.2 and you have a
-second interface bound to 10.1.1.3.
+```ruby
+require 'net/http'
+require 'net/http/local'
 
-    require 'multiplex'
-    uri = URI.parse('http://jsonip.com')
+# Bind to 10.1.1.3 in a block.
+Net::HTTP.bind '10.1.1.3' do
+  res = Net::HTTP.get_response uri
+  p JSON.parse(res.body)['ip'] # => 10.1.1.3
+end
 
-    Net::HTTP.bind 10.1.1.3 do
-      res = Net::HTTP.get_response(uri)
-      puts JSON.parse(res.body)['ip'] # 10.1.1.3
-    end
+# Bind and unbind without a block.
+Net::HTTP.bind '10.1.1.3'
 
-    res = Net::HTTP.get_response(uri)
-    puts JSON.parse(res.body)['ip'] # 10.1.1.2
+res = Net::HTTP.get_response(uri)
+p JSON.parse(res.body)['ip'] # => 10.1.1.3
 
-Alternatively, you can bind without a block and then unbind
-manually:
-
-    Net::HTTP.bind 10.1.1.3
-
-    res = Net::HTTP.get_response(uri)
-    puts JSON.parse(res.body)['ip'] # 10.1.1.3
-
-    Net::HTTP.unbind
-
-    res = Net::HTTP.get_response(uri)
-    puts JSON.parse(res.body)['ip'] # 10.1.1.2
+Net::HTTP.unbind
+```

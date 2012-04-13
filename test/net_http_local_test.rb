@@ -2,20 +2,21 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'test/unit'
 require 'json'
-require 'multiplex'
+require 'net/http'
+require 'net/http/local'
 
-class TestMultiplex < Test::Unit::TestCase
+class TestNetHTTPLocal < Test::Unit::TestCase
   def find_ip
-    uri = URI.parse('http://jsonip.com')
+    uri = URI.parse 'http://jsonip.com'
     res = Net::HTTP.start(uri.host, uri.port) do |http|
-      http.get('/')
+      http.get '/'
     end
 
     JSON.parse(res.body)['ip']
   end
 
   def setup
-    unless defined?(@@old_ip)
+    unless defined? @@old_ip
       @@old_ip = find_ip
       print "Change #{@@old_ip} to: "
       @@new_ip = STDIN.gets.chomp
@@ -23,11 +24,11 @@ class TestMultiplex < Test::Unit::TestCase
   end
 
   def teardown
-    Net::HTTP.unbind if TCPSocket.respond_to? :original_open
+    Net::HTTP.unbind if TCPSocket.respond_to? :open_with_local
   end
 
   def test_bind_without_block
-    Net::HTTP.bind(@@new_ip)
+    Net::HTTP.bind @@new_ip
     assert_equal @@new_ip, find_ip
 
     Net::HTTP.unbind
@@ -35,7 +36,7 @@ class TestMultiplex < Test::Unit::TestCase
   end
 
   def test_bind_with_block
-    Net::HTTP.bind(@@new_ip) do
+    Net::HTTP.bind @@new_ip do
       assert_equal @@new_ip, find_ip
     end
 
@@ -43,19 +44,19 @@ class TestMultiplex < Test::Unit::TestCase
   end
 
   def test_do_not_unbind_when_bind_not_given_block
-    Net::HTTP.bind(@@new_ip)
-    assert_respond_to TCPSocket, :original_open
+    Net::HTTP.bind @@new_ip
+    assert_respond_to TCPSocket, :open_with_local
   end
 
   def test_unbind_when_bind_given_block
     Net::HTTP.bind(@@new_ip) {}
     assert_raise NoMethodError do
-      TCPSocket.original_open
+      TCPSocket.open_with_local
     end
   end
 
   def test_bind_nil
-    Net::HTTP.bind(nil)
+    Net::HTTP.bind nil
     assert_equal @@old_ip, find_ip
   end
 end
