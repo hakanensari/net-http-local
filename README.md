@@ -18,10 +18,9 @@ A contrived example:
 
 ```ruby
 require 'json'
-require 'net/http'
+require 'net/http/local'
 require 'uri'
 
-require 'net/http/local'
 
 ip = -> do
   uri = URI.parse 'http://jsonip.com'
