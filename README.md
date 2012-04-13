@@ -26,11 +26,12 @@ require 'net/http/local'
 ip = -> do
   uri = URI.parse 'http://jsonip.com'
   res = Net::HTTP.get_response uri
+
   JSON.parse(res.body)['ip']
 end
  
 # The default IP address.
-p ip.call => # 10.1.1.2
+p ip.call # => 10.1.1.2
 
 # Bind to 10.1.1.3 in a block.
 Net::HTTP.bind '10.1.1.3' do
