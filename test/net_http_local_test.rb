@@ -59,4 +59,13 @@ class TestNetHTTPLocal < Test::Unit::TestCase
     Net::HTTP.bind nil
     assert_equal @@old_ip, find_ip
   end
+
+  def test_threads
+    thr = Thread.new do
+      Net::HTTP.bind @@new_ip
+    end
+    assert !TCPSocket.respond_to?(:open_with_local)
+    thr.join
+    assert TCPSocket.respond_to?(:open_with_local)
+  end
 end
