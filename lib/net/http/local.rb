@@ -1,7 +1,5 @@
-# Net::HTTP::Local allows TCPSocket to bind a Net::HTTP request to a specified
-# local address and port.
-#
-# If you are craving cURL's `interface` option, this is what you need.
+# Net::HTTP::Local binds a Net::HTTP request to a specified local address and
+# port.
 module Net::HTTP::Local
   # Binds to a local IP address.
   #

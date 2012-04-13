@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.email       = ['hakan.ensari@papercavalier.com']
   s.homepage    = 'http://github.com/hakanensari/net-http-local'
   s.summary     = %q{ Binds Net::HTTP requests to a local address and port }
-  s.description = %q{ Net::HTTP::Local allows TCPSocket to bind Net::HTTP
-                      requests to a local address and port. }
+  s.description = %q{ Net::HTTP::Local binds Net::HTTP requests to a local
+                      address and port. }
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
