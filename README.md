@@ -10,7 +10,7 @@ Installation
 ------------
 
 ```sh
-gem install net-http-local'
+gem install net-http-local
 ```
 
 Usage
@@ -19,6 +19,9 @@ Usage
 ```ruby
 require 'net/http'
 require 'net/http/local'
+require 'uri'
+
+uri = URI.parse 'http://jsonip.com'
 
 # Bind to 10.1.1.3 in a block.
 Net::HTTP.bind '10.1.1.3' do
@@ -29,7 +32,7 @@ end
 # Bind and unbind without a block.
 Net::HTTP.bind '10.1.1.3'
 
-res = Net::HTTP.get_response(uri)
+res = Net::HTTP.get_response uri
 p JSON.parse(res.body)['ip'] # => 10.1.1.3
 
 Net::HTTP.unbind
