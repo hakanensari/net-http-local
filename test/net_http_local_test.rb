@@ -17,7 +17,7 @@ class TestNetHTTPLocal < Test::Unit::TestCase
   def setup
     unless defined? @@old_ip
       @@old_ip = find_ip
-      print "Change #{@@old_ip} to: "
+      print "Bind #{@@old_ip} to: "
       @@new_ip = STDIN.gets.chomp
     end
   end
@@ -59,12 +59,12 @@ class TestNetHTTPLocal < Test::Unit::TestCase
     assert_equal @@old_ip, find_ip
   end
 
-  def test_threads
-    thr = Thread.new do
+  def test_thread_safety
+    Thread.new do
       Net::HTTP.bind @@new_ip
     end
-    assert !TCPSocket.respond_to?(:open_with_local)
-    thr.join
-    assert TCPSocket.respond_to?(:open_with_local)
+    Thread.new do
+      assert !TCPSocket.respond_to?(:open_with_local)
+    end.join
   end
 end
