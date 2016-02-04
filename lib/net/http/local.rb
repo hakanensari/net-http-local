@@ -14,7 +14,7 @@ module Net::HTTP::Local
   def bind(local_address, local_port = nil)
     (class << TCPSocket; self; end).instance_eval do
       alias_method :open_with_local, :open
-      define_method(:open) do |conn_address, conn_port|
+      define_method(:open) do |conn_address, conn_port, net_host, net_port|
         open_with_local conn_address, conn_port, local_address, local_port
       end
     end
